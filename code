@@ -1,0 +1,61 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        WriteToJournal();
+    }
+
+    static void WriteToJournal()
+    {
+        List<string> journalContent = new List<string>();
+        bool writingStarted = false;
+
+        Console.WriteLine("Welcome to Captain's journal.");
+        Console.WriteLine("Enter 'start' to begin writing, 'stop' to finish.");
+        while (true)
+        {
+            string userInput = Console.ReadLine().Trim();
+            if (userInput.ToLower() == "start")
+            {
+                writingStarted = true;
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Please enter 'start' to begin writing.");
+            }
+        }
+        while (writingStarted)
+        {
+            string userInput = Console.ReadLine().Trim();
+            if (userInput.ToLower() == "stop")
+            {
+                break;
+            }
+            else
+            {
+                journalContent.Add(userInput);
+            }
+        }
+
+        // Write content to file
+        string currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+        string fileName = $"{currentDate}.txt";
+        using (StreamWriter writer = new StreamWriter(fileName))
+        {
+            writer.WriteLine("Captain’s log");
+            writer.WriteLine($"Stardate {currentDate}");
+            foreach (string line in journalContent)
+            {
+                writer.WriteLine(line);
+            }
+            writer.WriteLine("Jean-Luc Picard");
+        }
+
+        Console.WriteLine($"Journal entry saved to {fileName}.");
+    }
+}
